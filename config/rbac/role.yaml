@@ -4,7 +4,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   creationTimestamp: null
-  name: manager-role
+  name: dnsmasq-controller-role
 rules:
 - apiGroups:
   - dnsmasq.kvaps.cf
