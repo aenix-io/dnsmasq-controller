@@ -1,0 +1,11 @@
+apiVersion: dnsmasq.kvaps.cf/v1alpha1
+kind: DnsmasqOptionSet
+metadata:
+  name: node1
+spec:
+  controller: ""
+  options:
+  - key: host-record
+    value: node1,10.9.8.7
+  - key: dhcp-host
+    value: set:ltsp1,a0:1d:48:b5:ae:a8,a0:1d:48:b5:ae:a9,id:*,10.9.8.7,node1,infinite

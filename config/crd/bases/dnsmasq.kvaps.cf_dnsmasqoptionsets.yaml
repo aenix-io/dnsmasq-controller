@@ -1,0 +1,108 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.4
+  creationTimestamp: null
+  name: dnsmasqoptionsets.dnsmasq.kvaps.cf
+spec:
+  group: dnsmasq.kvaps.cf
+  names:
+    kind: DnsmasqOptionSet
+    listKind: DnsmasqOptionSetList
+    plural: dnsmasqoptionsets
+    shortNames:
+    - dnsmasqopt
+    - dnsmasqopts
+    singular: dnsmasqoptionset
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      description: DnsmasqOptionSet is the Schema for the dnsmasqoptionsets API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: DnsmasqOptionSetSpec defines the desired state of DnsmasqOptionSet
+          properties:
+            controller:
+              type: string
+            options:
+              items:
+                description: DnsmasqOptionSetSpecOption defines the desired state
+                  of DnsmasqOptionSetSpec
+                properties:
+                  key:
+                    enum:
+                    - dhcp-range
+                    - dhcp-host
+                    - dhcp-userclass
+                    - dhcp-circuitid
+                    - dhcp-remoteid
+                    - dhcp-subscrid
+                    - dhcp-ignore
+                    - dhcp-broadcast
+                    - mx-host
+                    - dhcp-boot
+                    - dhcp-option
+                    - dhcp-option-force
+                    - server
+                    - rev-server
+                    - local
+                    - domain
+                    - dhcp-vendorclass
+                    - alias
+                    - dhcp-vendorclass
+                    - srv-host
+                    - txt-record
+                    - ptr-record
+                    - bootp-dynamic
+                    - dhcp-mac
+                    - dhcp-ignore-names
+                    - rebind-domain-ok
+                    - dhcp-match
+                    - dhcp-name-match
+                    - naptr-record
+                    - dhcp-generate-names
+                    - cname
+                    - pxe-service
+                    - add-mac
+                    - dhcp-duid
+                    - host-record
+                    - caa-record
+                    - dns-rr
+                    - auth-zone
+                    - synth-domain
+                    type: string
+                  value:
+                    type: string
+                type: object
+              type: array
+          type: object
+        status:
+          description: DnsmasqOptionSetStatus defines the observed state of DnsmasqOptionSet
+          type: object
+      type: object
+  version: v1alpha1
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

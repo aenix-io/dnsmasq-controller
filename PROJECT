@@ -1,0 +1,7 @@
+domain: kvaps.cf
+repo: github.com/kvaps/dnsmasq-controller
+resources:
+- group: dnsmasq
+  kind: DnsmasqOptionSet
+  version: v1alpha1
+version: "2"
