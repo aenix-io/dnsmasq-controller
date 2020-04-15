@@ -1,0 +1,16 @@
+---
+apiVersion: dnsmasq.kvaps.cf/v1alpha1
+kind: DnsmasqHostSet
+metadata:
+  name: node1
+spec:
+  controller: ""
+  hosts:
+  - ip: "10.9.8.7"
+    hostnames:
+    - "foo.local"
+    - "bar.local"
+  - ip: "10.1.2.3"
+    hostnames:
+    - "foo.remote"
+    - "bar.remote"

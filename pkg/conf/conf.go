@@ -14,6 +14,8 @@ type Config struct {
 	LogLevel             string
 	Development          bool
 	CleanupDir           bool
+	EnableDHCP           bool
+	EnableDNS            bool
 }
 
 var instance *Config

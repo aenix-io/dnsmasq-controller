@@ -53,6 +53,8 @@ func main() {
 		" All namespaces are watched if this parameter is left empty.")
 	flag.StringVar(&config.ControllerName, "controller", "", "Name of the controller this controller satisfies.")
 	flag.StringVar(&config.MetricsAddr, "metrics-addr", ":8080", "The address the metric endpoint binds to.")
+	flag.BoolVar(&config.EnableDNS, "dns", false, "Enable DNS Service and configuration discovery.")
+	flag.BoolVar(&config.EnableDHCP, "dhcp", false, "Enable DHCP Service and configuration discovery.")
 	flag.BoolVar(&config.EnableLeaderElection, "enable-leader-election", false,
 		"Enable leader election for controller manager. "+
 			"Enabling this will ensure there is only one active controller manager.")
@@ -111,12 +113,42 @@ func main() {
 
 	if err = (&controllers.DnsmasqOptionSetReconciler{
 		Client: mgr.GetClient(),
-		Log:    ctrl.Log.WithName("controllers").WithName("DnsmasqOptionSet"),
+		Log:    ctrl.Log.WithName("controllers").WithName("DnsmasqConfiguration"),
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "DnsmasqOptionSet")
 		os.Exit(1)
 	}
+	if config.EnableDNS {
+		if err = (&controllers.DnsmasqHostSetReconciler{
+			Client: mgr.GetClient(),
+			Log:    ctrl.Log.WithName("controllers").WithName("DnsmasqHostSet"),
+			Scheme: mgr.GetScheme(),
+		}).SetupWithManager(mgr); err != nil {
+			setupLog.Error(err, "unable to create controller", "controller", "DnsmasqHost")
+			os.Exit(1)
+		}
+	}
+	if config.EnableDHCP {
+		if err = (&controllers.DnsmasqDhcpHostSetReconciler{
+			Client: mgr.GetClient(),
+			Log:    ctrl.Log.WithName("controllers").WithName("DnsmasqDhcpHostSet"),
+			Scheme: mgr.GetScheme(),
+		}).SetupWithManager(mgr); err != nil {
+			setupLog.Error(err, "unable to create controller", "controller", "DnsmasqDhcpHostSet")
+			os.Exit(1)
+		}
+
+		if err = (&controllers.DnsmasqDhcpOptionSetReconciler{
+			Client: mgr.GetClient(),
+			Log:    ctrl.Log.WithName("controllers").WithName("DnsmasqDhcpOptionSet"),
+			Scheme: mgr.GetScheme(),
+		}).SetupWithManager(mgr); err != nil {
+			setupLog.Error(err, "unable to create controller", "controller", "DnsmasqDhcpOptionSet")
+			os.Exit(1)
+		}
+	}
+
 	// +kubebuilder:scaffold:builder
 
 	setupLog.Info("starting manager")

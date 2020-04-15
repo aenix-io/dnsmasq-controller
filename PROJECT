@@ -4,4 +4,13 @@ resources:
 - group: dnsmasq
   kind: DnsmasqOptionSet
   version: v1alpha1
+- group: dnsmasq
+  kind: DnsmasqHostSet
+  version: v1alpha1
+- group: dnsmasq
+  kind: DnsmasqDhcpHostSet
+  version: v1alpha1
+- group: dnsmasq
+  kind: DnsmasqDhcpOptionSet
+  version: v1alpha1
 version: "2"

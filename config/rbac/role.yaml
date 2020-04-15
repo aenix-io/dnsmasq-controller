@@ -9,20 +9,32 @@ rules:
 - apiGroups:
   - dnsmasq.kvaps.cf
   resources:
-  - dnsmasqoptionsets
+  - dnsmasqdhcphostsets
   verbs:
-  - create
-  - delete
   - get
   - list
-  - patch
-  - update
   - watch
 - apiGroups:
   - dnsmasq.kvaps.cf
   resources:
-  - dnsmasqoptionsets/status
+  - dnsmasqdhcpoptionsets
   verbs:
   - get
-  - patch
-  - update
+  - list
+  - watch
+- apiGroups:
+  - dnsmasq.kvaps.cf
+  resources:
+  - dnsmasqhostsets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - dnsmasq.kvaps.cf
+  resources:
+  - dnsmasqoptionsets
+  verbs:
+  - get
+  - list
+  - watch

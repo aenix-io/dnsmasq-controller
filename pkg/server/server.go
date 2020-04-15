@@ -30,7 +30,27 @@ func Start() error {
 		panic(err)
 	}
 
-	args := []string{"dnsmasq", "--no-daemon", "--conf-dir=" + config.DnsmasqConfDir}
+	args := []string{
+		"dnsmasq",
+		"--no-daemon",
+		"--no-hosts",
+		"--conf-dir=" + config.DnsmasqConfDir,
+	}
+
+	if config.EnableDNS {
+		args = append(args,
+			"--addn-hosts="+config.DnsmasqConfDir+"/hosts",
+		)
+	} else {
+		args = append(args, "--port=0")
+	}
+	if config.EnableDHCP {
+		args = append(args,
+			"--dhcp-hostsfile="+config.DnsmasqConfDir+"/dhcp-hosts",
+			"--dhcp-optsfile="+config.DnsmasqConfDir+"/dhcp-opts",
+		)
+	}
+
 	args = append(args, config.DnsmasqOptions...)
 
 	serverLog.Info("Starting dnsmasq: " + strings.Join(args, " "))
@@ -76,17 +96,23 @@ func serverStop(cmd *exec.Cmd) {
 
 func setupDir(p string, cleanup bool) error {
 	dir, err := ioutil.ReadDir(p)
-	if err != nil {
-		err = os.MkdirAll(p, os.ModePerm)
-		dir, err = ioutil.ReadDir(p)
-		if err != nil {
-			return err
-		}
-	}
 	if cleanup {
 		for _, d := range dir {
 			err = os.RemoveAll(path.Join([]string{p, d.Name()}...))
+			if err != nil {
+				return err
+			}
 		}
 	}
-	return err
+
+	dirs := []string{"/", "/hosts", "/dhcp-hosts", "/dhcp-opts"}
+	for _, dir := range dirs {
+		if _, err := os.Stat(p + dir); os.IsNotExist(err) {
+			err := os.MkdirAll(p+dir, os.ModePerm)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }

@@ -1,0 +1,20 @@
+# permissions for end users to view dnsmasqdhcpoptionsets.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: dnsmasqdhcpoptionset-viewer-role
+rules:
+- apiGroups:
+  - dnsmasq.kvaps.cf
+  resources:
+  - dnsmasqdhcpoptionsets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - dnsmasq.kvaps.cf
+  resources:
+  - dnsmasqdhcpoptionsets/status
+  verbs:
+  - get

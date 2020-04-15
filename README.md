@@ -9,7 +9,11 @@ A Dnsmasq-controller for Kubernetes, implemented in go using [kubebuilder](https
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/kristofferahl/healthchecksio-operator?style=for-the-badge)
 
 ## Supported resources
+
 - DnsmasqOptionSet
+- DnsmasqHostSet
+- DnsmasqDhcpHostSet
+- DnsmasqDhcpOptionSet
 
 ## Example
 ```yaml
@@ -21,11 +25,63 @@ metadata:
 spec:
   controller: ""
   options:
-  - key: host-record
-    value: node1,10.9.8.7
-  - key: dhcp-host
-    value: set:ltsp1,a0:1d:48:b5:ae:a8,a0:1d:48:b5:ae:a9,id:*,10.9.8.7,node1,infinite
+  - key: txt-record
+    value: example.com,"v=spf1 a -all"
+---
+apiVersion: dnsmasq.kvaps.cf/v1alpha1
+kind: DnsmasqHostSet
+metadata:
+  name: node1
+spec:
+  controller: ""
+  hosts:
+  - ip: "10.9.8.7"
+    hostnames:
+    - "foo.local"
+    - "bar.local"
+  - ip: "10.1.2.3"
+    hostnames:
+    - "foo.remote"
+    - "bar.remote"
+---
+apiVersion: dnsmasq.kvaps.cf/v1alpha1
+kind: DnsmasqDhcpHostSet
+metadata:
+  name: node1
+spec:
+  controller: ""
+  hosts:
+  - ip: 10.9.8.7
+    macs:
+    - 94:57:a5:d3:b6:f2
+    - 94:57:a5:d3:b6:f3
+    clientIDs:
+    - "*"
+    setTags:
+    - hp
+    tags:
+    - ltsp1
+    hostname: node1
+    leaseTime: infinite
+    ignore: false
+---
+apiVersion: dnsmasq.kvaps.cf/v1alpha1
+kind: DnsmasqDhcpOptionSet
+metadata:
+  name: ltsp1
+spec:
+  controller: ""
+  options:
+  - type: option
+    key: ntp-server
+    values:
+    - 192.168.0.4
+    tags:
+    - ltsp1
 ```
+
+	flag.BoolVar(&config.EnableDNS, "dns", false, "Enable DNS Service and DNS configuration discovery.")
+	flag.BoolVar(&config.EnableDHCP, "dhcp", false, "Enable DHCP Service and DHCP configuration discovery.")
 
 ### Configuration
 
@@ -35,6 +91,8 @@ spec:
 | `-conf-dir`               | string | false    | Dnsmasq config directory for write configuration to. (default "/etc/dnsmasq.d")                                                         |
 | `-controller`             | string | false    | Name of the controller this controller satisfies. (default "")                                                                          |
 | `-development`            | bool   | false    | Run the controller in development mode.                                                                                                 |
+| `-dhcp`                   | bool   | false    | Enable DHCP Service and configuration discovery.                                                                                        |
+| `-dns`                    | bool   | false    | Enable DNS Service and configuration discovery.                                                                                         |
 | `-enable-leader-election` | bool   | false    | Enable leader election for controller manager. Enabling this will ensure there is only one active controller manager.                   |
 | `-kubeconfig`             | string | false    | Paths to a kubeconfig. Only required if out-of-cluster.                                                                                 |
 | `-log-level`              | string | false    | The log level used by the operator. (default "info")                                                                                    |

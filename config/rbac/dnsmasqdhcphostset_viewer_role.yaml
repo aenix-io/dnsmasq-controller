@@ -1,0 +1,20 @@
+# permissions for end users to view dnsmasqdhcphostsets.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: dnsmasqdhcphostset-viewer-role
+rules:
+- apiGroups:
+  - dnsmasq.kvaps.cf
+  resources:
+  - dnsmasqdhcphostsets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - dnsmasq.kvaps.cf
+  resources:
+  - dnsmasqdhcphostsets/status
+  verbs:
+  - get

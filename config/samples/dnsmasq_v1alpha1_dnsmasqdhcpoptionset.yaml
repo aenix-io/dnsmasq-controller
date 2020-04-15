@@ -1,0 +1,14 @@
+---
+apiVersion: dnsmasq.kvaps.cf/v1alpha1
+kind: DnsmasqDhcpOptionSet
+metadata:
+  name: ltsp1
+spec:
+  controller: ""
+  options:
+  - type: option
+    key: ntp-server
+    values:
+    - 192.168.0.4
+    tags:
+    - ltsp1

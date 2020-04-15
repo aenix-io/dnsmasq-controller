@@ -41,8 +41,7 @@ spec:
               type: string
             options:
               items:
-                description: DnsmasqOptionSetSpecOption defines the desired state
-                  of DnsmasqOptionSetSpec
+                description: DnsmasqOption defines option for dnsmasq
                 properties:
                   key:
                     enum:
@@ -88,8 +87,13 @@ spec:
                     type: string
                   value:
                     type: string
+                required:
+                - key
+                - value
                 type: object
               type: array
+          required:
+          - options
           type: object
         status:
           description: DnsmasqOptionSetStatus defines the observed state of DnsmasqOptionSet

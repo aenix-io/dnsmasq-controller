@@ -31,24 +31,23 @@ import (
 	"github.com/kvaps/dnsmasq-controller/pkg/util"
 )
 
-// DnsmasqOptionSetReconciler reconciles a DnsmasqOptionSet object
-type DnsmasqOptionSetReconciler struct {
+// DnsmasqDhcpOptionSetReconciler reconciles a DnsmasqDhcpOptionSet object
+type DnsmasqDhcpOptionSetReconciler struct {
 	client.Client
 	Log    logr.Logger
 	Scheme *runtime.Scheme
 }
 
-// +kubebuilder:rbac:groups=dnsmasq.kvaps.cf,resources=dnsmasqoptionsets,verbs=get;list;watch
+// +kubebuilder:rbac:groups=dnsmasq.kvaps.cf,resources=dnsmasqdhcpoptionsets,verbs=get;list;watch
 
-func (r *DnsmasqOptionSetReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
+func (r *DnsmasqDhcpOptionSetReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	_ = context.Background()
-	_ = r.Log.WithValues("dnsmasqconfiguration", req.NamespacedName)
+	_ = r.Log.WithValues("dnsmasqdhcpoptionset", req.NamespacedName)
 	config := conf.GetConfig()
 
-	configFile := config.DnsmasqConfDir + "/" + req.Namespace + "-" + req.Name + ".conf"
-	tmpConfigFile := config.DnsmasqConfDir + "/." + req.Namespace + "-" + req.Name + ".conf.tmp"
+	configFile := config.DnsmasqConfDir + "/dhcp-opts/" + req.Namespace + "-" + req.Name
 
-	res := &dnsmasqv1alpha1.DnsmasqOptionSet{}
+	res := &dnsmasqv1alpha1.DnsmasqDhcpOptionSet{}
 	err := r.Client.Get(context.TODO(), req.NamespacedName, res)
 	if err != nil {
 		if errors.IsNotFound(err) {
@@ -74,44 +73,53 @@ func (r *DnsmasqOptionSetReconciler) Reconcile(req ctrl.Request) (ctrl.Result, e
 		return ctrl.Result{}, nil
 	}
 
-	// Write options
+	// Write dhcp-hosts
 	var configData string
-	for _, o := range res.Spec.Options {
-		if o.Key == "dhcp-range" && !config.EnableDHCP {
-			continue
+	for _, r := range res.Spec.Options {
+		configLine := ""
+		for _, v := range r.Tags {
+			configLine += ",tag:" + v
 		}
-		configData += o.Key + "=" + o.Value + "\n"
+		if r.Encap != "" {
+			configLine += ",encap:" + r.Encap
+		}
+		if r.ViEncap != "" {
+			configLine += ",vi-encap:" + r.ViEncap
+		}
+		if r.Vendor != "" {
+			configLine += ",vendor:" + r.Vendor
+		}
+		if r.Key != "" {
+			configLine += ","
+			if r.Type != "" {
+				configLine += r.Type + ":"
+			}
+			configLine += r.Key
+		}
+		for _, v := range r.Values {
+			configLine += "," + v
+		}
+		configLine += "\n"
+		configData += configLine[1:]
 	}
 	configBytes := []byte(configData)
 
-	configWritten, err := util.WriteConfig(configFile, tmpConfigFile, configBytes)
+	configWritten, err := util.WriteConfig(configFile, configFile, configBytes)
 	if err != nil {
 		r.Log.Error(err, "Failed to update "+configFile)
 		return ctrl.Result{}, nil
 	}
 
 	if configWritten {
-		if err = util.TestConfig(tmpConfigFile); err != nil {
-			//os.Remove(tmpConfigFile)
-			r.Log.Error(err, "Config "+tmpConfigFile+" is invalid!")
-			return ctrl.Result{}, nil
-		}
-
-		if err = os.Rename(tmpConfigFile, configFile); err != nil {
-			os.Remove(tmpConfigFile)
-			r.Log.Error(err, "Failed to move "+tmpConfigFile+" to "+configFile)
-			return ctrl.Result{}, nil
-		}
 		r.Log.Info("Written " + configFile)
 		config.Generation++
 	}
 
 	return ctrl.Result{}, nil
-
 }
 
-func (r *DnsmasqOptionSetReconciler) SetupWithManager(mgr ctrl.Manager) error {
+func (r *DnsmasqDhcpOptionSetReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&dnsmasqv1alpha1.DnsmasqOptionSet{}).
+		For(&dnsmasqv1alpha1.DnsmasqDhcpOptionSet{}).
 		Complete(r)
 }
