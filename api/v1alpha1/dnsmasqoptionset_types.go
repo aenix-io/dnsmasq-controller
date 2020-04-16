@@ -23,8 +23,8 @@ import (
 // DnsmasqOption defines option for dnsmasq
 type DnsmasqOption struct {
 	// +kubebuilder:validation:Enum=dhcp-range;dhcp-host;dhcp-userclass;dhcp-circuitid;dhcp-remoteid;dhcp-subscrid;dhcp-ignore;dhcp-broadcast;mx-host;dhcp-boot;dhcp-option;dhcp-option-force;server;rev-server;local;domain;dhcp-vendorclass;alias;dhcp-vendorclass;srv-host;txt-record;ptr-record;bootp-dynamic;dhcp-mac;dhcp-ignore-names;rebind-domain-ok;dhcp-match;dhcp-name-match;naptr-record;dhcp-generate-names;cname;pxe-service;add-mac;dhcp-duid;host-record;caa-record;dns-rr;auth-zone;synth-domain
-	Key   string `json:"key"`
-	Value string `json:"value"`
+	Key    string   `json:"key"`
+	Values []string `json:"values"`
 }
 
 // DnsmasqOptionSetSpec defines the desired state of DnsmasqOptionSet

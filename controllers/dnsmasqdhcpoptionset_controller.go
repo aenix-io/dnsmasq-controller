@@ -90,14 +90,10 @@ func (r *DnsmasqDhcpOptionSetReconciler) Reconcile(req ctrl.Request) (ctrl.Resul
 			configLine += ",vendor:" + r.Vendor
 		}
 		if r.Key != "" {
-			configLine += ","
-			if r.Type != "" {
-				configLine += r.Type + ":"
-			}
-			configLine += r.Key
+			configLine += "," + r.Key
 		}
 		for _, v := range r.Values {
-			configLine += "," + v
+			configData += "," + v
 		}
 		configLine += "\n"
 		configData += configLine[1:]

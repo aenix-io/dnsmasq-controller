@@ -22,7 +22,6 @@ import (
 
 // DnsmasqDhcpOption defines dhcp-option for dnsmasq
 type DnsmasqDhcpOption struct {
-	Type    string   `json:"type,omitempty"`
 	Key     string   `json:"key"`
 	Values  []string `json:"values"`
 	Tags    []string `json:"tags,omitempty"`

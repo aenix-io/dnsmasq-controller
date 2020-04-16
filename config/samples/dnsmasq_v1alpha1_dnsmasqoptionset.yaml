@@ -7,4 +7,6 @@ spec:
   controller: ""
   options:
   - key: txt-record
-    value: example.com,"v=spf1 a -all"
+    values:
+    - example.com
+    - v=spf1 a -all

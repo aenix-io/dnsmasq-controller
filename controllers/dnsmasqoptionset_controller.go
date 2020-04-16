@@ -80,7 +80,13 @@ func (r *DnsmasqOptionSetReconciler) Reconcile(req ctrl.Request) (ctrl.Result, e
 		if o.Key == "dhcp-range" && !config.EnableDHCP {
 			continue
 		}
-		configData += o.Key + "=" + o.Value + "\n"
+		configData += o.Key + "="
+		configValues := ""
+		for _, v := range o.Values {
+			configValues += "," + v
+		}
+		configData += configValues[1:]
+		configData += "\n"
 	}
 	configBytes := []byte(configData)
 

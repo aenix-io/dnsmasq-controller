@@ -51,8 +51,6 @@ spec:
                     items:
                       type: string
                     type: array
-                  type:
-                    type: string
                   values:
                     items:
                       type: string

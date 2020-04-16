@@ -85,11 +85,13 @@ spec:
                     - auth-zone
                     - synth-domain
                     type: string
-                  value:
-                    type: string
+                  values:
+                    items:
+                      type: string
+                    type: array
                 required:
                 - key
-                - value
+                - values
                 type: object
               type: array
           required:

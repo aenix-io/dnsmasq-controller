@@ -15,55 +15,83 @@ A Dnsmasq-controller for Kubernetes, implemented in go using [kubebuilder](https
 - DnsmasqDhcpHostSet
 - DnsmasqDhcpOptionSet
 
-## Example
+## Examples
+
+Global DHCP-configuration:
+
+```yaml
+---
+apiVersion: dnsmasq.kvaps.cf/v1alpha1
+kind: DnsmasqDhcpOptionSet
+metadata:
+  name: default-network-configuration
+spec:
+  controller: ""
+  options:
+  - key: option:router
+    values: [192.168.67.1]
+  - key: option:dns-server
+    values: [192.168.67.1]
+  - key: option:domain-name
+    values: [infra.example.org]
+  - key: option:domain-search
+    values: [infra.example.org]
+---
+apiVersion: dnsmasq.kvaps.cf/v1alpha1
+kind: DnsmasqOptionSet
+metadata:
+  name: default-matchers
+spec:
+  controller: ""
+  options:
+  - key: dhcp-range
+    values: [192.168.67.0,static,infinite]
+  - key: dhcp-match
+    values: [set:iPXE,"175","39"]
+  - key: dhcp-match
+    values: [set:X86PC,option:client-arch,"0"]
+  - key: dhcp-match
+    values: [set:X86-64_EFI,option:client-arch,"7"]
+  - key: dhcp-match
+    values: [set:X86-64_EFI,option:client-arch,"9"]
+```
+
+Global DNS-configuration:
+
 ```yaml
 ---
 apiVersion: dnsmasq.kvaps.cf/v1alpha1
 kind: DnsmasqOptionSet
 metadata:
-  name: node1
+  name: global-dns
 spec:
   controller: ""
   options:
+  - key: srv-host
+    values: [_kerberos-master._tcp.infra.example.org,freeipa.example.org,"88"]
+  - key: srv-host
+    values: [_kerberos-master._udp.infra.example.org,freeipa.example.org,"88"]
+  - key: srv-host
+    values: [_kerberos._tcp.infra.example.org,freeipa.example.org,"88"]
+  - key: srv-host
+    values: [_kerberos._udp.infra.example.org,freeipa.example.org,"88"]
+  - key: srv-host
+    values: [_kpasswd._tcp.infra.example.org,freeipa.example.org,"464"]
+  - key: srv-host
+    values: [_kpasswd._udp.infra.example.org,freeipa.example.org,"464"]
+  - key: srv-host
+    values: [_ldap._tcp.infra.example.org,freeipa.example.org,"389"]
+  - key: srv-host
+    values: [_ntp._udp.infra.example.org,129.6.15.28,"123"]
+  - key: srv-host
+    values: [_ntp._udp.infra.example.org,129.6.15.29,"123"]
   - key: txt-record
-    value: example.com,"v=spf1 a -all"
----
-apiVersion: dnsmasq.kvaps.cf/v1alpha1
-kind: DnsmasqHostSet
-metadata:
-  name: node1
-spec:
-  controller: ""
-  hosts:
-  - ip: "10.9.8.7"
-    hostnames:
-    - "foo.local"
-    - "bar.local"
-  - ip: "10.1.2.3"
-    hostnames:
-    - "foo.remote"
-    - "bar.remote"
----
-apiVersion: dnsmasq.kvaps.cf/v1alpha1
-kind: DnsmasqDhcpHostSet
-metadata:
-  name: node1
-spec:
-  controller: ""
-  hosts:
-  - ip: 10.9.8.7
-    macs:
-    - 94:57:a5:d3:b6:f2
-    - 94:57:a5:d3:b6:f3
-    clientIDs:
-    - "*"
-    setTags:
-    - hp
-    tags:
-    - ltsp1
-    hostname: node1
-    leaseTime: infinite
-    ignore: false
+    values: [_kerberos.infra.example.org,EXAMPLE.ORG]
+```
+
+Netboot-server:
+
+```yaml
 ---
 apiVersion: dnsmasq.kvaps.cf/v1alpha1
 kind: DnsmasqDhcpOptionSet
@@ -72,16 +100,56 @@ metadata:
 spec:
   controller: ""
   options:
-  - type: option
-    key: ntp-server
-    values:
-    - 192.168.0.4
-    tags:
-    - ltsp1
+  - key: server-ip-address
+    tags: [ltsp1]
+    type: option
+    values: [192.168.67.11]
+  - key: tftp-server
+    tags: [ltsp1]
+    type: option
+    values: [ltsp1]
+  - key: bootfile-name
+    tags: [ltsp1,X86PC]
+    type: option
+    values: [ltsp/grub/i386-pc/core.0]
+  - key: bootfile-name
+    tags: [ltsp1,X86-64_EFI]
+    type: option
+    values: [ltsp/grub/x86_64-efi/core.efi]
 ```
 
-	flag.BoolVar(&config.EnableDNS, "dns", false, "Enable DNS Service and DNS configuration discovery.")
-	flag.BoolVar(&config.EnableDHCP, "dhcp", false, "Enable DHCP Service and DHCP configuration discovery.")
+Netboot-client:
+
+```yaml
+---
+apiVersion: dnsmasq.kvaps.cf/v1alpha1
+kind: DnsmasqDhcpHostSet
+metadata:
+  name: netboot-client
+spec:
+  controller: ""
+  hosts:
+  - ip: 192.168.67.20
+    macs:
+    - 94:57:a5:d3:b6:f2
+    - 94:57:a5:d3:b6:f3
+    clientIDs: ["*"]
+    setTags: [ltsp1]
+    hostname: node1
+    leaseTime: infinite
+---
+apiVersion: dnsmasq.kvaps.cf/v1alpha1
+kind: DnsmasqHostSet
+metadata:
+  name: netboot-client
+spec:
+  controller: ""
+  hosts:
+  - ip: 192.168.67.20
+    hostnames:
+    - node1
+    - node1.infra.example.org
+```
 
 ### Configuration
 

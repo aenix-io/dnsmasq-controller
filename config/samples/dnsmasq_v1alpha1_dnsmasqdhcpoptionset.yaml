@@ -6,8 +6,7 @@ metadata:
 spec:
   controller: ""
   options:
-  - type: option
-    key: ntp-server
+  - key: option:ntp-server
     values:
     - 192.168.0.4
     tags:
