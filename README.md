@@ -15,6 +15,27 @@ A Dnsmasq-controller for Kubernetes, implemented in go using [kubebuilder](https
 - DhcpHosts
 - DhcpOptions
 
+
+### Configuration
+
+| Flag                      | Type   | Required | Description                                                                                                                             |
+|---------------------------|--------|----------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| `-cleanup`                | bool   | false    | Cleanup Dnsmasq config directory before start.                                                                                          |
+| `-conf-dir`               | string | false    | Dnsmasq config directory for write configuration to. (default "/etc/dnsmasq.d")                                                         |
+| `-controller`             | string | false    | Name of the controller this controller satisfies. (default "")                                                                          |
+| `-development`            | bool   | false    | Run the controller in development mode.                                                                                                 |
+| `-dhcp`                   | bool   | false    | Enable DHCP Service and configuration discovery.                                                                                        |
+| `-dns`                    | bool   | false    | Enable DNS Service and configuration discovery.                                                                                         |
+| `-enable-leader-election` | bool   | false    | Enable leader election for controller manager. Enabling this will ensure there is only one active controller manager.                   |
+| `-kubeconfig`             | string | false    | Paths to a kubeconfig. Only required if out-of-cluster.                                                                                 |
+| `-log-level`              | string | false    | The log level used by the operator. (default "info")                                                                                    |
+| `-metrics-addr`           | string | false    | The address the metric endpoint binds to. (default ":8080")                                                                             |
+| `-sync-delay`             | int    | false    | Time in seconds to syncronise Dnsmasq configuration. (default 1)                                                                        |
+| `-watch-namespace`        | string | false    | Namespace the controller watches for updates to Kubernetes objects. All namespaces are watched if this parameter is left empty.         |
+| `--`                      | array  | false    | Additional command line arguments for Dnsmasq may be specified after `--` (read [dnsmasq-man] for more details)                         |
+
+[dnsmasq-man]: http://www.thekelleys.org.uk/dnsmasq/docs/dnsmasq-man.html
+
 ## Examples
 
 Global DHCP-configuration:
@@ -89,7 +110,7 @@ spec:
     values: [_kerberos.infra.example.org,EXAMPLE.ORG]
 ```
 
-Netboot-server:
+Add Netboot-server:
 
 ```yaml
 ---
@@ -114,7 +135,7 @@ spec:
     values: [ltsp/grub/x86_64-efi/core.efi]
 ```
 
-Netboot-client:
+Add DHCP-client for network booting:
 
 ```yaml
 ---
@@ -133,6 +154,11 @@ spec:
     setTags: [ltsp1]
     hostname: node1
     leaseTime: infinite
+```
+
+Add A, AAAA and PTR records to the DNS:
+
+```yaml
 ---
 apiVersion: dnsmasq.kvaps.cf/v1beta1
 kind: DnsHosts
@@ -146,26 +172,6 @@ spec:
     - node1
     - node1.infra.example.org
 ```
-
-### Configuration
-
-| Flag                      | Type   | Required | Description                                                                                                                             |
-|---------------------------|--------|----------|-----------------------------------------------------------------------------------------------------------------------------------------|
-| `-cleanup`                | bool   | false    | Cleanup Dnsmasq config directory before start.                                                                                          |
-| `-conf-dir`               | string | false    | Dnsmasq config directory for write configuration to. (default "/etc/dnsmasq.d")                                                         |
-| `-controller`             | string | false    | Name of the controller this controller satisfies. (default "")                                                                          |
-| `-development`            | bool   | false    | Run the controller in development mode.                                                                                                 |
-| `-dhcp`                   | bool   | false    | Enable DHCP Service and configuration discovery.                                                                                        |
-| `-dns`                    | bool   | false    | Enable DNS Service and configuration discovery.                                                                                         |
-| `-enable-leader-election` | bool   | false    | Enable leader election for controller manager. Enabling this will ensure there is only one active controller manager.                   |
-| `-kubeconfig`             | string | false    | Paths to a kubeconfig. Only required if out-of-cluster.                                                                                 |
-| `-log-level`              | string | false    | The log level used by the operator. (default "info")                                                                                    |
-| `-metrics-addr`           | string | false    | The address the metric endpoint binds to. (default ":8080")                                                                             |
-| `-sync-delay`             | int    | false    | Time in seconds to syncronise Dnsmasq configuration. (default 1)                                                                        |
-| `-watch-namespace`        | string | false    | Namespace the controller watches for updates to Kubernetes objects. All namespaces are watched if this parameter is left empty.         |
-| `--`                      | array  | false    | Additional command line arguments for Dnsmasq may be specified after `--` (read [dnsmasq-man] for more details)                         |
-
-[dnsmasq-man]: http://www.thekelleys.org.uk/dnsmasq/docs/dnsmasq-man.html
 
 ## Development
 
