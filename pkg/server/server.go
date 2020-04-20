@@ -1,6 +1,7 @@
 package server
 
 import (
+	"bufio"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -13,7 +14,8 @@ import (
 )
 
 var (
-	serverLog = ctrl.Log.WithName("server")
+	serverLog  = ctrl.Log.WithName("server")
+	dnsmasqLog = ctrl.Log.WithName("dnsmasq")
 )
 
 func Start() error {
@@ -77,9 +79,23 @@ func serverStart(dnsmasqBinary string, args []string) *exec.Cmd {
 		Path: dnsmasqBinary,
 		Args: args,
 	}
+	stderr, err := cmd.StderrPipe()
+	if err != nil {
+		panic(err)
+	}
 	if err := cmd.Start(); err != nil {
 		panic(err)
 	}
+	buf := bufio.NewReader(stderr)
+	go func() {
+		for {
+			line, _, err := buf.ReadLine()
+			if err != nil {
+				break
+			}
+			dnsmasqLog.Info(string(line))
+		}
+	}()
 	return cmd
 }
 
