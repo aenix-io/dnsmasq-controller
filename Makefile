@@ -27,20 +27,29 @@ run: generate fmt vet manifests
 
 # Install CRDs into a cluster
 install: manifests
-	kustomize build config/crd | kubectl apply -f -
+	kubectl apply -f config/crd/bases
 
 # Uninstall CRDs from a cluster
 uninstall: manifests
-	kustomize build config/crd | kubectl delete -f -
+	kubectl delete -f config/crd/bases
 
 # Deploy controller in the configured Kubernetes cluster in ~/.kube/config
 deploy: manifests
-	cd config/manager && kustomize edit set image controller=${IMG}
-	kustomize build config/default | kubectl apply -f -
+	# RBAC
+	kubectl apply -n default \
+	  -f config/rbac/service_account.yaml \
+	  -f config/rbac/role.yaml \
+	  -f config/rbac/role_binding.yaml \
+	  -f config/rbac/leader_election_role.yaml \
+	  -f config/rbac/leader_election_role_binding.yaml
+	# DNS-server (for infra.example.org)
+	kubectl apply -n default -f config/controller/dns-server.yaml
+	# DHCP-server
+	kubectl apply -n default -f config/controller/dhcp-server.yaml
 
 # Generate manifests e.g. CRD, RBAC etc.
 manifests: controller-gen
-	$(CONTROLLER_GEN) $(CRD_OPTIONS) rbac:roleName=dnsmasq-controller-role webhook paths="./..." output:crd:artifacts:config=config/crd/bases
+	$(CONTROLLER_GEN) $(CRD_OPTIONS) rbac:roleName=dnsmasq-controller paths="./..." output:crd:artifacts:config=config/crd/bases
 
 # Run go fmt against code
 fmt:

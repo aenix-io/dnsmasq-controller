@@ -1,12 +1,12 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: dnsmasq-controller-rolebinding
+  name: dnsmasq-controller
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: dnsmasq-controller-role
+  name: dnsmasq-controller
 subjects:
 - kind: ServiceAccount
-  name: default
-  namespace: system
+  name: dnsmasq-controller
+  namespace: default

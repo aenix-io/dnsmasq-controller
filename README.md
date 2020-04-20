@@ -36,6 +36,27 @@ A Dnsmasq-controller for Kubernetes, implemented in go using [kubebuilder](https
 
 [dnsmasq-man]: http://www.thekelleys.org.uk/dnsmasq/docs/dnsmasq-man.html
 
+## Installation
+
+```bash
+# CRDs
+kubectl apply -f config/crd/bases/
+
+# RBAC
+kubectl apply -n default \
+  -f config/rbac/service_account.yaml \
+  -f config/rbac/role.yaml \
+  -f config/rbac/role_binding.yaml \
+  -f config/rbac/leader_election_role.yaml \
+  -f config/rbac/leader_election_role_binding.yaml
+
+# DNS-server (for infra.example.org)
+kubectl apply -n default -f config/controller/dns-server.yaml
+
+# DHCP-server
+kubectl apply -n default -f config/controller/dhcp-server.yaml
+```
+
 ## Examples
 
 Global DHCP-configuration:
@@ -110,7 +131,7 @@ spec:
     values: [_kerberos.infra.example.org,EXAMPLE.ORG]
 ```
 
-Add Netboot-server:
+Netboot-server configuration with tag `ltsp1`:
 
 ```yaml
 ---
@@ -135,7 +156,7 @@ spec:
     values: [ltsp/grub/x86_64-efi/core.efi]
 ```
 
-Add DHCP-client for network booting:
+DHCP-client for network booting using assigned tag `ltsp1`:
 
 ```yaml
 ---

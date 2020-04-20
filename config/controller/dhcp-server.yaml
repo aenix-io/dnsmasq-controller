@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dnsmasq-controller-dhcp
+  labels:
+    app: dnsmasq-controller-dhcp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dnsmasq-controller-dhcp
+  template:
+    metadata:
+      labels:
+        app: dnsmasq-controller-dhcp
+    spec:
+      hostNetwork: true
+      containers:
+      - name: dnsmasq
+        image: docker.io/kvaps/dnsmasq-controller:latest
+        args:
+        #- --watch-namespace=$(NAMESPACE)
+        - --metrics-addr=:0
+        - --enable-leader-election=true
+        - --dhcp
+        - --
+        - --dhcp-broadcast
+        - --dhcp-authoritative
+        env:
+        #- name: NAMESPACE
+        #  valueFrom:
+        #    fieldRef:
+        #      fieldPath: metadata.namespace
+        resources:
+          limits:
+            cpu: 100m
+            memory: 30Mi
+          requests:
+            cpu: 100m
+            memory: 20Mi
+      serviceAccountName: dnsmasq-controller
+      terminationGracePeriodSeconds: 10
