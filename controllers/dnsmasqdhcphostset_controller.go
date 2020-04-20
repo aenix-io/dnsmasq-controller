@@ -75,8 +75,9 @@ func (r *DnsmasqDhcpHostSetReconciler) Reconcile(req ctrl.Request) (ctrl.Result,
 
 	// Write dhcp-hosts
 	var configData string
+	var configLine string
 	for _, h := range res.Spec.Hosts {
-		configLine := ""
+		configLine = ""
 		for _, v := range h.Macs {
 			configLine += "," + v
 		}
