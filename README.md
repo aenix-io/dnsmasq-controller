@@ -10,10 +10,10 @@ A Dnsmasq-controller for Kubernetes, implemented in go using [kubebuilder](https
 
 ## Supported resources
 
-- DnsmasqOptionSet
-- DnsmasqHostSet
-- DnsmasqDhcpHostSet
-- DnsmasqDhcpOptionSet
+- DnsmasqOptions
+- DnsHosts
+- DhcpHosts
+- DhcpOptions
 
 ## Examples
 
@@ -22,7 +22,7 @@ Global DHCP-configuration:
 ```yaml
 ---
 apiVersion: dnsmasq.kvaps.cf/v1alpha1
-kind: DnsmasqDhcpOptionSet
+kind: DhcpOptions
 metadata:
   name: default-network-configuration
 spec:
@@ -38,7 +38,7 @@ spec:
     values: [infra.example.org]
 ---
 apiVersion: dnsmasq.kvaps.cf/v1alpha1
-kind: DnsmasqOptionSet
+kind: DnsmasqOptions
 metadata:
   name: default-matchers
 spec:
@@ -61,7 +61,7 @@ Global DNS-configuration:
 ```yaml
 ---
 apiVersion: dnsmasq.kvaps.cf/v1alpha1
-kind: DnsmasqOptionSet
+kind: DnsmasqOptions
 metadata:
   name: global-dns
 spec:
@@ -94,7 +94,7 @@ Netboot-server:
 ```yaml
 ---
 apiVersion: dnsmasq.kvaps.cf/v1alpha1
-kind: DnsmasqDhcpOptionSet
+kind: DhcpOptions
 metadata:
   name: ltsp1
 spec:
@@ -119,7 +119,7 @@ Netboot-client:
 ```yaml
 ---
 apiVersion: dnsmasq.kvaps.cf/v1alpha1
-kind: DnsmasqDhcpHostSet
+kind: DhcpHosts
 metadata:
   name: netboot-client
 spec:
@@ -135,7 +135,7 @@ spec:
     leaseTime: infinite
 ---
 apiVersion: dnsmasq.kvaps.cf/v1alpha1
-kind: DnsmasqHostSet
+kind: DnsHosts
 metadata:
   name: netboot-client
 spec:
