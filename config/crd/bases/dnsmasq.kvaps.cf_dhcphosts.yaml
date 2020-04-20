@@ -8,6 +8,13 @@ metadata:
   creationTimestamp: null
   name: dhcphosts.dnsmasq.kvaps.cf
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .spec.controller
+    name: Controller
+    type: string
+  - JSONPath: .metadata.creationTimestamp
+    name: Age
+    type: date
   group: dnsmasq.kvaps.cf
   names:
     kind: DhcpHosts
@@ -15,6 +22,7 @@ spec:
     plural: dhcphosts
     singular: dhcphosts
   scope: Namespaced
+  subresources: {}
   validation:
     openAPIV3Schema:
       description: DhcpHosts is the Schema for the dhcphosts API

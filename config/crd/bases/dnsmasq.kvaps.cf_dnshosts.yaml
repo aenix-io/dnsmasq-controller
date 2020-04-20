@@ -8,6 +8,13 @@ metadata:
   creationTimestamp: null
   name: dnshosts.dnsmasq.kvaps.cf
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .spec.controller
+    name: Controller
+    type: string
+  - JSONPath: .metadata.creationTimestamp
+    name: Age
+    type: date
   group: dnsmasq.kvaps.cf
   names:
     kind: DnsHosts
@@ -15,6 +22,7 @@ spec:
     plural: dnshosts
     singular: dnshosts
   scope: Namespaced
+  subresources: {}
   validation:
     openAPIV3Schema:
       description: DnsHosts is the Schema for the dnshosts API

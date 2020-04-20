@@ -41,6 +41,9 @@ type DnsmasqOptionsStatus struct {
 
 // +kubebuilder:object:root=true
 
+// +kubebuilder:printcolumn:name="Controller",type="string",JSONPath=".spec.controller"
+// +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
+
 // DnsmasqOptions is the Schema for the dnsmasqoptions API
 type DnsmasqOptions struct {
 	metav1.TypeMeta   `json:",inline"`

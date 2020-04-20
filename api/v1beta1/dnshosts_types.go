@@ -42,6 +42,9 @@ type DnsHostsStatus struct {
 
 // +kubebuilder:object:root=true
 
+// +kubebuilder:printcolumn:name="Controller",type="string",JSONPath=".spec.controller"
+// +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
+
 // DnsHosts is the Schema for the dnshosts API
 type DnsHosts struct {
 	metav1.TypeMeta   `json:",inline"`
