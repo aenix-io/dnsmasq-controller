@@ -22,6 +22,7 @@ import (
 
 // DnsmasqDhcpOption defines dhcp-option for dnsmasq
 type DnsmasqDhcpOption struct {
+	// +kubebuilder:validation:Pattern="^([0-9]+|option:.+|option6:.+)$"
 	Key     string   `json:"key"`
 	Values  []string `json:"values"`
 	Tags    []string `json:"tags,omitempty"`

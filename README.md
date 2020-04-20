@@ -100,21 +100,17 @@ metadata:
 spec:
   controller: ""
   options:
-  - key: server-ip-address
+  - key: option:server-ip-address
     tags: [ltsp1]
-    type: option
     values: [192.168.67.11]
-  - key: tftp-server
+  - key: option:tftp-server
     tags: [ltsp1]
-    type: option
     values: [ltsp1]
-  - key: bootfile-name
+  - key: option:bootfile-name
     tags: [ltsp1,X86PC]
-    type: option
     values: [ltsp/grub/i386-pc/core.0]
-  - key: bootfile-name
+  - key: option:bootfile-name
     tags: [ltsp1,X86-64_EFI]
-    type: option
     values: [ltsp/grub/x86_64-efi/core.efi]
 ```
 
