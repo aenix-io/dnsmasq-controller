@@ -4,16 +4,16 @@ A Dnsmasq-controller for Kubernetes, implemented in go using [kubebuilder](https
 
 ## Status
 
-![GitHub](https://img.shields.io/badge/status-alpha-blue?style=for-the-badge)
+![GitHub](https://img.shields.io/badge/status-beta-blue?style=for-the-badge)
 ![GitHub](https://img.shields.io/github/license/kristofferahl/healthchecksio-operator?style=for-the-badge)
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/kristofferahl/healthchecksio-operator?style=for-the-badge)
 
 ## Supported resources
 
-- DnsmasqOptionSet
-- DnsmasqHostSet
-- DnsmasqDhcpHostSet
-- DnsmasqDhcpOptionSet
+- DnsmasqOptions
+- DnsHosts
+- DhcpHosts
+- DhcpOptions
 
 ## Examples
 
@@ -21,8 +21,8 @@ Global DHCP-configuration:
 
 ```yaml
 ---
-apiVersion: dnsmasq.kvaps.cf/v1alpha1
-kind: DnsmasqDhcpOptionSet
+apiVersion: dnsmasq.kvaps.cf/v1beta1
+kind: DhcpOptions
 metadata:
   name: default-network-configuration
 spec:
@@ -37,8 +37,8 @@ spec:
   - key: option:domain-search
     values: [infra.example.org]
 ---
-apiVersion: dnsmasq.kvaps.cf/v1alpha1
-kind: DnsmasqOptionSet
+apiVersion: dnsmasq.kvaps.cf/v1beta1
+kind: DnsmasqOptions
 metadata:
   name: default-matchers
 spec:
@@ -60,8 +60,8 @@ Global DNS-configuration:
 
 ```yaml
 ---
-apiVersion: dnsmasq.kvaps.cf/v1alpha1
-kind: DnsmasqOptionSet
+apiVersion: dnsmasq.kvaps.cf/v1beta1
+kind: DnsmasqOptions
 metadata:
   name: global-dns
 spec:
@@ -93,8 +93,8 @@ Netboot-server:
 
 ```yaml
 ---
-apiVersion: dnsmasq.kvaps.cf/v1alpha1
-kind: DnsmasqDhcpOptionSet
+apiVersion: dnsmasq.kvaps.cf/v1beta1
+kind: DhcpOptions
 metadata:
   name: ltsp1
 spec:
@@ -118,8 +118,8 @@ Netboot-client:
 
 ```yaml
 ---
-apiVersion: dnsmasq.kvaps.cf/v1alpha1
-kind: DnsmasqDhcpHostSet
+apiVersion: dnsmasq.kvaps.cf/v1beta1
+kind: DhcpHosts
 metadata:
   name: netboot-client
 spec:
@@ -134,8 +134,8 @@ spec:
     hostname: node1
     leaseTime: infinite
 ---
-apiVersion: dnsmasq.kvaps.cf/v1alpha1
-kind: DnsmasqHostSet
+apiVersion: dnsmasq.kvaps.cf/v1beta1
+kind: DnsHosts
 metadata:
   name: netboot-client
 spec:

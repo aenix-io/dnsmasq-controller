@@ -1,0 +1,24 @@
+# permissions for end users to edit dnshosts.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: dnshosts-editor-role
+rules:
+- apiGroups:
+  - dnsmasq.kvaps.cf
+  resources:
+  - dnshosts
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - dnsmasq.kvaps.cf
+  resources:
+  - dnshosts/status
+  verbs:
+  - get

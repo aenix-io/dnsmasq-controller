@@ -1,0 +1,73 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.4
+  creationTimestamp: null
+  name: dnshosts.dnsmasq.kvaps.cf
+spec:
+  group: dnsmasq.kvaps.cf
+  names:
+    kind: DnsHosts
+    listKind: DnsHostsList
+    plural: dnshosts
+    singular: dnshosts
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      description: DnsHosts is the Schema for the dnshosts API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: DnsHostsSpec defines the desired state of DnsHosts
+          properties:
+            controller:
+              type: string
+            hosts:
+              items:
+                description: DnsHost holds the mapping between IP and hostnames that
+                  will be added to dnsmasq hosts file.
+                properties:
+                  hostnames:
+                    description: Hostnames for the above IP address.
+                    items:
+                      type: string
+                    type: array
+                  ip:
+                    description: IP address of the host file entry.
+                    type: string
+                required:
+                - ip
+                type: object
+              type: array
+          required:
+          - hosts
+          type: object
+        status:
+          description: DnsHostsStatus defines the observed state of DnsHosts
+          type: object
+      type: object
+  version: v1beta1
+  versions:
+  - name: v1beta1
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

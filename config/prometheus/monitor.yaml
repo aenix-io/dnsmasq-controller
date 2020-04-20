@@ -13,4 +13,4 @@ spec:
       port: https
   selector:
     matchLabels:
-      control-plane: cdnsmasq-controller
+      control-plane: dnsmasq-controller

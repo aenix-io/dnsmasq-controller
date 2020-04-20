@@ -1,0 +1,24 @@
+# permissions for end users to edit dhcphosts.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: dhcphosts-editor-role
+rules:
+- apiGroups:
+  - dnsmasq.kvaps.cf
+  resources:
+  - dhcphosts
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - dnsmasq.kvaps.cf
+  resources:
+  - dhcphosts/status
+  verbs:
+  - get

@@ -1,0 +1,24 @@
+# permissions for end users to edit dhcpoptions.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: dhcpoptions-editor-role
+rules:
+- apiGroups:
+  - dnsmasq.kvaps.cf
+  resources:
+  - dhcpoptions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - dnsmasq.kvaps.cf
+  resources:
+  - dhcpoptions/status
+  verbs:
+  - get

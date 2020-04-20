@@ -9,7 +9,7 @@ rules:
 - apiGroups:
   - dnsmasq.kvaps.cf
   resources:
-  - dnsmasqdhcphostsets
+  - dhcphosts
   verbs:
   - get
   - list
@@ -17,7 +17,7 @@ rules:
 - apiGroups:
   - dnsmasq.kvaps.cf
   resources:
-  - dnsmasqdhcpoptionsets
+  - dhcpoptions
   verbs:
   - get
   - list
@@ -25,7 +25,7 @@ rules:
 - apiGroups:
   - dnsmasq.kvaps.cf
   resources:
-  - dnsmasqhostsets
+  - dnshosts
   verbs:
   - get
   - list
@@ -33,7 +33,7 @@ rules:
 - apiGroups:
   - dnsmasq.kvaps.cf
   resources:
-  - dnsmasqoptionsets
+  - dnsmasqoptions
   verbs:
   - get
   - list

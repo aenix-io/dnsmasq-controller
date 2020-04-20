@@ -1,0 +1,20 @@
+# permissions for end users to view dnshosts.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: dnshosts-viewer-role
+rules:
+- apiGroups:
+  - dnsmasq.kvaps.cf
+  resources:
+  - dnshosts
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - dnsmasq.kvaps.cf
+  resources:
+  - dnshosts/status
+  verbs:
+  - get

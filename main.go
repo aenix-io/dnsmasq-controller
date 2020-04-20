@@ -28,7 +28,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	logrzap "sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	dnsmasqv1alpha1 "github.com/kvaps/dnsmasq-controller/api/v1alpha1"
+	dnsmasqv1beta1 "github.com/kvaps/dnsmasq-controller/api/v1beta1"
 	"github.com/kvaps/dnsmasq-controller/controllers"
 	"github.com/kvaps/dnsmasq-controller/pkg/conf"
 	"github.com/kvaps/dnsmasq-controller/pkg/server"
@@ -43,7 +43,7 @@ var (
 func init() {
 	_ = clientgoscheme.AddToScheme(scheme)
 
-	_ = dnsmasqv1alpha1.AddToScheme(scheme)
+	_ = dnsmasqv1beta1.AddToScheme(scheme)
 	// +kubebuilder:scaffold:scheme
 }
 
@@ -111,40 +111,39 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = (&controllers.DnsmasqOptionSetReconciler{
+	if err = (&controllers.DnsmasqOptionsReconciler{
 		Client: mgr.GetClient(),
-		Log:    ctrl.Log.WithName("controllers").WithName("DnsmasqConfiguration"),
+		Log:    ctrl.Log.WithName("controllers").WithName("DnsmasqOptions"),
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "DnsmasqOptionSet")
+		setupLog.Error(err, "unable to create controller", "controller", "DnsmasqOptions")
 		os.Exit(1)
 	}
 	if config.EnableDNS {
-		if err = (&controllers.DnsmasqHostSetReconciler{
+		if err = (&controllers.DnsHostsReconciler{
 			Client: mgr.GetClient(),
-			Log:    ctrl.Log.WithName("controllers").WithName("DnsmasqHostSet"),
+			Log:    ctrl.Log.WithName("controllers").WithName("DnsHosts"),
 			Scheme: mgr.GetScheme(),
 		}).SetupWithManager(mgr); err != nil {
-			setupLog.Error(err, "unable to create controller", "controller", "DnsmasqHost")
+			setupLog.Error(err, "unable to create controller", "controller", "DnsHosts")
 			os.Exit(1)
 		}
 	}
 	if config.EnableDHCP {
-		if err = (&controllers.DnsmasqDhcpHostSetReconciler{
+		if err = (&controllers.DhcpHostsReconciler{
 			Client: mgr.GetClient(),
-			Log:    ctrl.Log.WithName("controllers").WithName("DnsmasqDhcpHostSet"),
+			Log:    ctrl.Log.WithName("controllers").WithName("DhcpHosts"),
 			Scheme: mgr.GetScheme(),
 		}).SetupWithManager(mgr); err != nil {
-			setupLog.Error(err, "unable to create controller", "controller", "DnsmasqDhcpHostSet")
+			setupLog.Error(err, "unable to create controller", "controller", "DhcpHosts")
 			os.Exit(1)
 		}
-
-		if err = (&controllers.DnsmasqDhcpOptionSetReconciler{
+		if err = (&controllers.DhcpOptionsReconciler{
 			Client: mgr.GetClient(),
-			Log:    ctrl.Log.WithName("controllers").WithName("DnsmasqDhcpOptionSet"),
+			Log:    ctrl.Log.WithName("controllers").WithName("DhcpOptions"),
 			Scheme: mgr.GetScheme(),
 		}).SetupWithManager(mgr); err != nil {
-			setupLog.Error(err, "unable to create controller", "controller", "DnsmasqDhcpOptionSet")
+			setupLog.Error(err, "unable to create controller", "controller", "DhcpOptions")
 			os.Exit(1)
 		}
 	}

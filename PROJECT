@@ -2,15 +2,15 @@ domain: kvaps.cf
 repo: github.com/kvaps/dnsmasq-controller
 resources:
 - group: dnsmasq
-  kind: DnsmasqOptionSet
-  version: v1alpha1
+  kind: DnsmasqOptions
+  version: v1beta1
 - group: dnsmasq
-  kind: DnsmasqHostSet
-  version: v1alpha1
+  kind: DnsHosts
+  version: v1beta1
 - group: dnsmasq
-  kind: DnsmasqDhcpHostSet
-  version: v1alpha1
+  kind: DhcpHosts
+  version: v1beta1
 - group: dnsmasq
-  kind: DnsmasqDhcpOptionSet
-  version: v1alpha1
+  kind: DhcpOptions
+  version: v1beta1
 version: "2"
