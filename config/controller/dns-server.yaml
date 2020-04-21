@@ -1,18 +1,20 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: dnsmasq-controller-dns
   labels:
-    app: dnsmasq-controller-dns
+    app: dnsmasq-controller
+    role: dns
 spec:
-  replicas: 3
   selector:
     matchLabels:
-      app: dnsmasq-controller-dns
+      app: dnsmasq-controller
+      role: dns
   template:
     metadata:
       labels:
-        app: dnsmasq-controller-dns
+        app: dnsmasq-controller
+        role: dns
     spec:
       hostNetwork: true
       containers:
@@ -26,7 +28,7 @@ spec:
         - --expand-hosts
         - --domain=infra.example.org
         - --auth-server=$(NODE_NAME),$(NODE_IP)
-        - --auth-zone=infra.example.org,192.168.0.0/16
+        - --auth-zone=infra.example.org
         env:
         #- name: NAMESPACE
         #  valueFrom:
@@ -47,5 +49,15 @@ spec:
           requests:
             cpu: 100m
             memory: 20Mi
+      priorityClassName: system-node-critical
       serviceAccountName: dnsmasq-controller
       terminationGracePeriodSeconds: 10
+      nodeSelector:
+        node-role.kubernetes.io/dnsmasq: ""
+      tolerations:
+      - effect: NoSchedule
+        operator: Exists
+      - effect: NoExecute
+        operator: Exists
+      - key: CriticalAddonsOnly
+        operator: Exists

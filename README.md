@@ -55,6 +55,9 @@ kubectl apply -n default -f config/controller/dns-server.yaml
 
 # DHCP-server
 kubectl apply -n default -f config/controller/dhcp-server.yaml
+
+# Add dnsmasq role to your nodes
+kubectl label node <node1> <node2> <node3> node-role.kubernetes.io/dnsmasq=
 ```
 
 ## Examples

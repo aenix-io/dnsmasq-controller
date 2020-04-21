@@ -1,18 +1,20 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: dnsmasq-controller-dhcp
   labels:
-    app: dnsmasq-controller-dhcp
+    app: dnsmasq-controller
+    role: dhcp
 spec:
-  replicas: 3
   selector:
     matchLabels:
-      app: dnsmasq-controller-dhcp
+      app: dnsmasq-controller
+      role: dhcp
   template:
     metadata:
       labels:
-        app: dnsmasq-controller-dhcp
+        app: dnsmasq-controller
+        role: dhcp
     spec:
       hostNetwork: true
       containers:
@@ -38,5 +40,15 @@ spec:
           requests:
             cpu: 100m
             memory: 20Mi
+      priorityClassName: system-node-critical
       serviceAccountName: dnsmasq-controller
       terminationGracePeriodSeconds: 10
+      nodeSelector:
+        node-role.kubernetes.io/dnsmasq: ""
+      tolerations:
+      - effect: NoSchedule
+        operator: Exists
+      - effect: NoExecute
+        operator: Exists
+      - key: CriticalAddonsOnly
+        operator: Exists
