@@ -34,7 +34,7 @@ type DhcpOption struct {
 // DhcpOptionsSpec defines the desired state of DhcpOptions
 type DhcpOptionsSpec struct {
 	Controller string       `json:"controller,omitempty"`
-	Options    []DhcpOption `json:"options"`
+	Options    []DhcpOption `json:"options,omitempty"`
 }
 
 // DhcpOptionsStatus defines the observed state of DhcpOptions

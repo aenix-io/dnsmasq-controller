@@ -75,8 +75,6 @@ spec:
                     type: array
                 type: object
               type: array
-          required:
-          - hosts
           type: object
         status:
           description: DhcpHostsStatus defines the observed state of DhcpHosts

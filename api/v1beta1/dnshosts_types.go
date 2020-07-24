@@ -31,7 +31,7 @@ type DnsHost struct {
 // DnsHostsSpec defines the desired state of DnsHosts
 type DnsHostsSpec struct {
 	Controller string    `json:"controller,omitempty"`
-	Hosts      []DnsHost `json:"hosts"`
+	Hosts      []DnsHost `json:"hosts,omitempty"`
 }
 
 // DnsHostsStatus defines the observed state of DnsHosts

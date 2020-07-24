@@ -61,8 +61,6 @@ spec:
                 - ip
                 type: object
               type: array
-          required:
-          - hosts
           type: object
         status:
           description: DnsHostsStatus defines the observed state of DnsHosts

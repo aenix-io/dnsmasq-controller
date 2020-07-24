@@ -70,8 +70,6 @@ spec:
                 - values
                 type: object
               type: array
-          required:
-          - options
           type: object
         status:
           description: DhcpOptionsStatus defines the observed state of DhcpOptions

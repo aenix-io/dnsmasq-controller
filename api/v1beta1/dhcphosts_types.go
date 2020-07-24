@@ -35,7 +35,7 @@ type DhcpHost struct {
 // DhcpHostsSpec defines the desired state of DhcpHosts
 type DhcpHostsSpec struct {
 	Controller string     `json:"controller,omitempty"`
-	Hosts      []DhcpHost `json:"hosts"`
+	Hosts      []DhcpHost `json:"hosts,omitempty"`
 }
 
 // DhcpHostsStatus defines the observed state of DhcpHosts
