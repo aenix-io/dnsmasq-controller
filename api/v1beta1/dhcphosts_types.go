@@ -23,7 +23,7 @@ import (
 // DnsmasqDhcpHost holds the mapping between Macs and IP that will be added to dnsmasq dhcp-hosts file.
 type DhcpHost struct {
 	Macs      []string `json:"macs,omitempty"`
-	ClientIDs []string `json:"clientIDs,omitempty"`
+	ClientID  string   `json:"clientID,omitempty"`
 	SetTags   []string `json:"setTags,omitempty"`
 	Tags      []string `json:"tags,omitempty"`
 	IP        string   `json:"ip,omitempty"`

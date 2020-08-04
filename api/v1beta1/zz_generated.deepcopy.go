@@ -32,11 +32,6 @@ func (in *DhcpHost) DeepCopyInto(out *DhcpHost) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.ClientIDs != nil {
-		in, out := &in.ClientIDs, &out.ClientIDs
-		*out = make([]string, len(*in))
-		copy(*out, *in)
-	}
 	if in.SetTags != nil {
 		in, out := &in.SetTags, &out.SetTags
 		*out = make([]string, len(*in))

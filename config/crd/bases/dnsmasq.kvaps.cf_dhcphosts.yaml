@@ -49,10 +49,8 @@ spec:
                 description: DnsmasqDhcpHost holds the mapping between Macs and IP
                   that will be added to dnsmasq dhcp-hosts file.
                 properties:
-                  clientIDs:
-                    items:
-                      type: string
-                    type: array
+                  clientID:
+                    type: string
                   hostname:
                     type: string
                   ignore:

@@ -81,8 +81,8 @@ func (r *DhcpHostsReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		for _, v := range h.Macs {
 			configLine += "," + v
 		}
-		for _, v := range h.ClientIDs {
-			configLine += ",id:" + v
+		if h.ClientID != "" {
+			configLine += ",id:" + h.ClientID
 		}
 		for _, v := range h.SetTags {
 			configLine += ",set:" + v
