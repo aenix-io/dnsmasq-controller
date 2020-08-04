@@ -1,5 +1,5 @@
 # Build the dnsmasq-controller binary
-FROM golang:1.13 as builder
+FROM golang:1.14 as builder
 
 WORKDIR /workspace
 # Copy the Go Modules manifests
@@ -18,7 +18,7 @@ COPY pkg/ pkg/
 # Build
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -o dnsmasq-controller main.go
 
-FROM alpine:3.11
+FROM alpine:3.12
 RUN apk add --no-cache dnsmasq
 COPY --from=builder /workspace/dnsmasq-controller /dnsmasq-controller
 

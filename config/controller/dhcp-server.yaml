@@ -20,6 +20,9 @@ spec:
       containers:
       - name: dnsmasq
         image: docker.io/kvaps/dnsmasq-controller:latest
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN"]
         args:
         #- --watch-namespace=$(NAMESPACE)
         - --metrics-addr=:0
