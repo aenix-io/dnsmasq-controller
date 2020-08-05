@@ -78,6 +78,7 @@ spec:
                     - rebind-domain-ok
                     - dhcp-match
                     - dhcp-name-match
+                    - tag-if
                     - naptr-record
                     - dhcp-generate-names
                     - cname
