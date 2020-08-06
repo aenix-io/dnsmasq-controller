@@ -100,8 +100,6 @@ spec:
                 - values
                 type: object
               type: array
-          required:
-          - options
           type: object
         status:
           description: DnsmasqOptionsStatus defines the observed state of DnsmasqOptions

@@ -30,7 +30,7 @@ type DnsmasqOption struct {
 // DnsmasqOptionsSpec defines the desired state of DnsmasqOptions
 type DnsmasqOptionsSpec struct {
 	Controller string          `json:"controller,omitempty"`
-	Options    []DnsmasqOption `json:"options"`
+	Options    []DnsmasqOption `json:"options,omitempty"`
 }
 
 // DnsmasqOptionsStatus defines the observed state of DnsmasqOptions
