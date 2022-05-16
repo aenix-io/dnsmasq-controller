@@ -1,20 +1,12 @@
-
 ---
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.2.5
+    controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
   name: dnsmasqoptions.dnsmasq.kvaps.cf
 spec:
-  additionalPrinterColumns:
-  - JSONPath: .spec.controller
-    name: Controller
-    type: string
-  - JSONPath: .metadata.creationTimestamp
-    name: Age
-    type: date
   group: dnsmasq.kvaps.cf
   names:
     kind: DnsmasqOptions
@@ -22,94 +14,100 @@ spec:
     plural: dnsmasqoptions
     singular: dnsmasqoptions
   scope: Namespaced
-  subresources: {}
-  validation:
-    openAPIV3Schema:
-      description: DnsmasqOptions is the Schema for the dnsmasqoptions API
-      properties:
-        apiVersion:
-          description: 'APIVersion defines the versioned schema of this representation
-            of an object. Servers should convert recognized schemas to the latest
-            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
-          type: string
-        kind:
-          description: 'Kind is a string value representing the REST resource this
-            object represents. Servers may infer this from the endpoint the client
-            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
-          type: string
-        metadata:
-          type: object
-        spec:
-          description: DnsmasqOptionsSpec defines the desired state of DnsmasqOptions
-          properties:
-            controller:
-              type: string
-            options:
-              items:
-                description: DnsmasqOption defines option for dnsmasq
-                properties:
-                  key:
-                    enum:
-                    - dhcp-range
-                    - dhcp-host
-                    - dhcp-userclass
-                    - dhcp-circuitid
-                    - dhcp-remoteid
-                    - dhcp-subscrid
-                    - dhcp-ignore
-                    - dhcp-broadcast
-                    - mx-host
-                    - dhcp-boot
-                    - dhcp-option
-                    - dhcp-option-force
-                    - server
-                    - rev-server
-                    - local
-                    - domain
-                    - dhcp-vendorclass
-                    - alias
-                    - dhcp-vendorclass
-                    - srv-host
-                    - txt-record
-                    - ptr-record
-                    - bootp-dynamic
-                    - dhcp-mac
-                    - dhcp-ignore-names
-                    - rebind-domain-ok
-                    - dhcp-match
-                    - dhcp-name-match
-                    - tag-if
-                    - naptr-record
-                    - dhcp-generate-names
-                    - cname
-                    - pxe-service
-                    - add-mac
-                    - dhcp-duid
-                    - host-record
-                    - caa-record
-                    - dns-rr
-                    - auth-zone
-                    - synth-domain
-                    type: string
-                  values:
-                    items:
-                      type: string
-                    type: array
-                required:
-                - key
-                - values
-                type: object
-              type: array
-          type: object
-        status:
-          description: DnsmasqOptionsStatus defines the observed state of DnsmasqOptions
-          type: object
-      type: object
-  version: v1beta1
   versions:
-  - name: v1beta1
+  - additionalPrinterColumns:
+    - jsonPath: .spec.controller
+      name: Controller
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: DnsmasqOptions is the Schema for the dnsmasqoptions API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DnsmasqOptionsSpec defines the desired state of DnsmasqOptions
+            properties:
+              controller:
+                type: string
+              options:
+                items:
+                  description: DnsmasqOption defines option for dnsmasq
+                  properties:
+                    key:
+                      enum:
+                      - dhcp-range
+                      - dhcp-host
+                      - dhcp-userclass
+                      - dhcp-circuitid
+                      - dhcp-remoteid
+                      - dhcp-subscrid
+                      - dhcp-ignore
+                      - dhcp-broadcast
+                      - mx-host
+                      - dhcp-boot
+                      - dhcp-option
+                      - dhcp-option-force
+                      - server
+                      - rev-server
+                      - local
+                      - domain
+                      - dhcp-vendorclass
+                      - alias
+                      - dhcp-vendorclass
+                      - srv-host
+                      - txt-record
+                      - ptr-record
+                      - bootp-dynamic
+                      - dhcp-mac
+                      - dhcp-ignore-names
+                      - rebind-domain-ok
+                      - dhcp-match
+                      - dhcp-name-match
+                      - tag-if
+                      - naptr-record
+                      - dhcp-generate-names
+                      - cname
+                      - pxe-service
+                      - add-mac
+                      - dhcp-duid
+                      - host-record
+                      - caa-record
+                      - dns-rr
+                      - auth-zone
+                      - synth-domain
+                      type: string
+                    values:
+                      items:
+                        type: string
+                      type: array
+                  required:
+                  - key
+                  - values
+                  type: object
+                type: array
+            type: object
+          status:
+            description: DnsmasqOptionsStatus defines the observed state of DnsmasqOptions
+            type: object
+        type: object
     served: true
     storage: true
+    subresources: {}
 status:
   acceptedNames:
     kind: ""
