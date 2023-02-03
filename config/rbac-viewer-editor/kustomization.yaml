@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - dhcphosts_editor_role.yaml
+  - dhcphosts_viewer_role.yaml
+  - dhcpoptions_editor_role.yaml
+  - dhcpoptions_viewer_role.yaml
+  - dnshosts_editor_role.yaml
+  - dnshosts_viewer_role.yaml
+  - dnsmasqoptions_editor_role.yaml
+  - dnsmasqoptions_viewer_role.yaml

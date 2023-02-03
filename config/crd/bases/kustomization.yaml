@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - dnsmasq.kvaps.cf_dhcphosts.yaml
+  - dnsmasq.kvaps.cf_dhcpoptions.yaml
+  - dnsmasq.kvaps.cf_dnshosts.yaml
+  - dnsmasq.kvaps.cf_dnsmasqoptions.yaml
