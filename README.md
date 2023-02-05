@@ -40,21 +40,16 @@ A Dnsmasq-controller for Kubernetes, implemented in go using [kubebuilder](https
 
 ```bash
 # CRDs
-kubectl apply -f config/crd/bases/
+kubectl apply -k config/crd/bases
 
 # RBAC
-kubectl apply -n default \
-  -f config/rbac/service_account.yaml \
-  -f config/rbac/role.yaml \
-  -f config/rbac/role_binding.yaml \
-  -f config/rbac/leader_election_role.yaml \
-  -f config/rbac/leader_election_role_binding.yaml
+kubectl apply -k config/rbac
 
 # DNS-server (for infra.example.org)
-kubectl apply -n default -f config/controller/dns-server.yaml
+kubectl apply -k config/dns-server
 
 # DHCP-server
-kubectl apply -n default -f config/controller/dhcp-server.yaml
+kubectl apply -k config/dhcp-server
 
 # Add dnsmasq role to your nodes
 kubectl label node <node1> <node2> <node3> node-role.kubernetes.io/dnsmasq=
